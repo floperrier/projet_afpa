@@ -30,6 +30,7 @@ $query = $pdo->prepare("
 SELECT * FROM category
 INNER JOIN post_category pc ON pc.category_id = category.id
 WHERE pc.post_id = :id");
+
 $query->execute(['id' => $post->getId()]);
 $query->setFetchMode(PDO::FETCH_CLASS,Category::class);
 /** @var Category[] */
