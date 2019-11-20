@@ -2,6 +2,7 @@
 
 use App\Connection;
 use App\Helper\Text;
+use App\Model\Category;
 use App\Model\Post;
 use App\PaginatedQuery;
 use App\URL;
@@ -15,6 +16,19 @@ $paginatedQuery = new PaginatedQuery(
     Post::class
 );
 $posts = $paginatedQuery->getItems();
+foreach ($posts as $post) {
+    $postsById[$post->getId()] = $post;
+}
+$categories = $pdo
+    ->query("SELECT c.*, pc.post_id FROM post_category pc
+            JOIN category c ON pc.category_id = c.id
+            WHERE pc.post_id IN (" . implode(',',array_keys($postsById)) . ")")
+    ->fetchAll(PDO::FETCH_CLASS,Category::class);
+
+foreach($categories as $category) {
+    $postsById[$category->getPostId()]->addCategory($category);
+}
+$link = $router->url('home');
 ?>
 
 <h1>Mon blog</h1>
@@ -26,7 +40,6 @@ $posts = $paginatedQuery->getItems();
 </div>
 
 <div class="d-flex justify-content-between my-4">
-<?= $paginatedQuery->previousLink($router->url('home')) ?>
-<?= $paginatedQuery->nextLink($router->url('home')) ?>
-
+<?= $paginatedQuery->previousLink($link) ?>
+<?= $paginatedQuery->nextLink($link) ?>
 </div>

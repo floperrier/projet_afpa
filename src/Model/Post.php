@@ -8,14 +8,11 @@ use DateTime;
 class Post {
 
     private $id;
-
     private $name;
-
     private $slug;
-
     private $content;
-
     private $created_at;
+    private $categories = [];
 
     public function getId(): int
     {
@@ -53,6 +50,16 @@ class Post {
             return null;
         }
         return nl2br(htmlentities(Text::excerpt($this->content,60)));
+    }
+
+    public function getCategories(): ?array
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): void
+    {
+        $this->categories[] = $category;
     }
 
 }
