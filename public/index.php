@@ -29,4 +29,6 @@ $router
     ->get('/blog','post/index','blog')
     ->get('/blog/category/[*:slug]-[i:id]','category/show','category')
     ->get('/blog/[*:slug]-[i:id]','post/show','post')
+    ->get('/admin','admin/index','admin')
+    ->get('/admin/post','admin/post/show','admin_post')
     ->run();
