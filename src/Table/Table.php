@@ -3,9 +3,13 @@
 namespace App\Table;
 
 use PDO;
+use App\Table\Exception\NotFoundException;
 
 abstract class Table
 {
+    /**
+     * @var PDO
+     */
     protected $pdo;
 
     protected $table = null;

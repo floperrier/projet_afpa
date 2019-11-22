@@ -11,7 +11,7 @@ $slug = $params['slug'];
 $pdo = Connection::getPDO();
 $post = (new PostTable($pdo))->find($id);
 
-// Sinon on vérifie que le slug correspond, si ce n'est pas le cas on redirige vers la bonne url
+// on vérifie que le slug correspond, si ce n'est pas le cas on redirige vers la bonne url
 if ($slug !== $post->getSlug()) {
     http_response_code(301);
     header('Location: ' . $router->url('post',['slug' => $post->getSlug(), 'id' => $post->getId()]));
