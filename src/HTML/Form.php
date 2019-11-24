@@ -18,13 +18,11 @@ class Form
     public function input(string $key, string $label)
     {
         $value = $this->getValue($key);
-        $invalidFeedback = isset($this->errors[$key]) ? "<div class='invalid-feedback'>" . implode('<br>',$this->errors[$key]) . "</div>" : '';
-        $isInvalid = isset($this->errors[$key]) ? "is-invalid" : "";
         return <<<HTML
         <div class="form-group">
         <label for="field{$key}">$label</label>
-        <input class="form-control $isInvalid" type="text" name="$key" id="field{$key}" value="$value">
-        $invalidFeedback
+        <input class="{$this->getInputClass($key)}" type="text" name="{$key}" id="field{$key}" value="{$value}">
+        {$this->getInvalidFeedback($key)}
         </div>
 HTML;
     }
@@ -32,13 +30,11 @@ HTML;
     public function textarea(string $key, string $label)
     {
         $value = $this->getValue($key);
-        $invalidFeedback = isset($this->errors[$key]) ? "<div class='invalid-feedback'>" . implode('<br>',$this->errors[$key]) . "</div>" : '';
-        $isInvalid = isset($this->errors[$key]) ? "is-invalid" : "";
         return <<<HTML
         <div class="form-group">
         <label for="field{$key}">$label</label>
-        <textarea class="form-control $isInvalid" rows="15" type="text" name="$key" id="field{$key}">$value</textarea>
-        $invalidFeedback
+        <textarea class="{$this->getInputClass($key)}" rows="15" type="text" name="{$key}" id="field{$key}">$value</textarea>
+        {$this->getInvalidFeedback($key)}
         </div>
 HTML;
     }
@@ -48,7 +44,29 @@ HTML;
         if (is_array($this->data)) {
             return $this->data[$key] ?? null;
         }
-        $method = 'get' . ucfirst($key);
-        return $this->data->$method();
+        $method = 'get' . str_replace(' ','',ucwords(str_replace('_',' ',$key)));
+        $value = $this->data->$method();
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format("Y-m-d H:i:s");
+        }
+        return $value;
+    }
+
+    private function getInputClass(string $key): string
+    {
+        $inputClass = 'form-control';
+        if (isset($this->errors[$key])) {
+            $inputClass .= ' is-invalid';
+        }
+        return $inputClass;
+    }
+
+    private function getInvalidFeedback(string $key): string
+    {
+        $invalidFeedback = '';
+        if (isset($this->errors[$key])) {
+            $invalidFeedback .= '<div class="invalid-feedback">' . implode('<br>',$this->errors[$key]) . '</div>';
+        }
+        return $invalidFeedback;
     }
 }

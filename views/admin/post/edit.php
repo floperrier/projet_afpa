@@ -8,20 +8,22 @@ use App\Validator;
 $id = $params['id'];
 
 $pdo = Connection::getPDO();
-Validator::lang('fr');
 $postManager =  new PostTable($pdo);
 $post = $postManager->find($id);
 $success = null;
 $errors = [];
 
 if (!empty($_POST)) {
+    Validator::lang('fr');
     $v = new Validator($_POST);
-    $v->rule('required','name');
-    $v->rule('lengthBetween','name',3,200);
+    $v->rule('required',['name', 'slug']);
+    $v->rule('lengthBetween',['name', 'slug'],3,200);
     if ($v->validate()) {
-        $post->setName($_POST["name"]);
-        $post->setSlug($_POST["slug"]);
-        $post->setContent($_POST["content"]);
+        $post
+            ->setName($_POST["name"])
+            ->setSlug($_POST["slug"])
+            ->setContent($_POST["content"])
+            ->setCreatedAt($_POST['created_at']);
         $postManager->update($post);
         $success = "L'article a bien été modifié !";    
     } else {
@@ -36,15 +38,19 @@ $form = new Form($post,$errors);
         Des erreurs sont présentes, veuillez les corriger avant de continuer
     </div>
 <?php endif ?>
+
 <?php if ($success): ?>
     <div class="alert alert-success">
         <?= $success ?>
     </div>
 <?php endif ?>
+
 <h1>Edition de l'article <?= $post->getName() ?></h1>
 <form action="" method="post">
     <?= $form->input('name','Nom') ?>
     <?= $form->input('slug','URL') ?>
     <?= $form->textarea('content','Contenu') ?>
+    <?= $form->input('created_at','Date de création') ?>
+
     <button class="btn btn-primary" type="submit">Modifier</button>
 </form>

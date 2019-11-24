@@ -11,12 +11,17 @@ abstract class Table
      * @var PDO
      */
     protected $pdo;
-
     protected $table = null;
     protected $class = null;
 
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
+        if ($this->table === null) {
+            throw new \Exception("La classe " . get_class($this) . " n'a pas de propriété \$table");
+        }
+        if ($this->table === null) {
+            throw new \Exception("La classe " . get_class($this) . " n'a pas de propriété \$class");
+        }
         $this->pdo = $pdo;
     }
 

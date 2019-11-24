@@ -14,6 +14,7 @@ class Post {
     private $created_at;
     private $categories = [];
 
+    /* GETTER */
     public function getId(): int
     {
         return $this->id;
@@ -29,15 +30,20 @@ class Post {
         return $this->slug;
     }
 
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return new DateTime($this->created_at);
+    }
+
+    /* SETTER */
     public function setName(string $name): self
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
         return $this;
     }
 
@@ -47,19 +53,21 @@ class Post {
         return $this;
     }
 
-    public function getContent(): string
+    public function setContent(string $content): self
     {
-        return $this->content;
+        $this->content = $content;
+        return $this;
+    }
+
+    public function setCreatedAt(string $date): self
+    {
+        $this->created_at = $date;
+        return $this;
     }
 
     public function getFormattedContent(): string
     {
         return nl2br(htmlentities($this->content));
-    }
-
-    public function getCreatedAt(): DateTime
-    {
-        return new DateTime($this->created_at);
     }
 
     public function getExcerpt(): string
