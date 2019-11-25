@@ -27,7 +27,7 @@ abstract class Table
 
     public function find(int $id)
     {
-        $query = $this->pdo->prepare("SELECT * FROM $this->table WHERE id = :id");
+        $query = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
         $query->execute(['id' => $id]);
         $query->setFetchMode(PDO::FETCH_CLASS,$this->class);
         $result = $query->fetch();
@@ -35,5 +35,18 @@ abstract class Table
             throw new NotFoundException($this->table,$id);
         }
         return $result;
+    }
+
+    public function exists(string $field, string $value, ?int $except = null): bool
+    {
+        $sql = "SELECT count(id) FROM {$this->table} WHERE $field = ?";
+        $params = [$value];
+        if ($except != null) {
+            $sql .= " AND id != ?";
+            $params[] = $except;
+        }
+        $query = $this->pdo->prepare($sql);
+        $query->execute($params);
+        return $query->fetch(PDO::FETCH_NUM)[0] > 0;
     }
 }

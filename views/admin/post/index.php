@@ -15,8 +15,11 @@ $link = $router->url('admin_posts');
     </div>
 <?php endif ?>
 
+<div class="d-flex justify-content-between mb-4 align-items-center">
 <h1>Articles</h1>
-<table class="table">
+<a class="btn btn-success mr-4" href="<?= $router->url('admin_post_new') ?>">Nouvel article</a>
+</div>
+<table class="table text-center">
     <thead>
         <tr>
             <th>#</th>

@@ -15,32 +15,38 @@ class Post {
     private $categories = [];
 
     /* GETTER */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return new DateTime($this->created_at);
     }
 
     /* SETTER */
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+    
     public function setName(string $name): self
     {
         $this->name = $name;

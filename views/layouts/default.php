@@ -11,6 +11,14 @@
 <body class="d-flex flex-column h-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="/">Blog</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="<?= $router->url('admin_posts') ?>">Articles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= $router->url('admin_categories') ?>">Catégories</a>
+            </li>
+        </ul>
     </nav>
     <div class="container mt-4">
         <?= $content ?>
