@@ -27,6 +27,25 @@ class Form
 HTML;
     }
 
+    public function select(string $key, string $label, $options = [])
+    {
+        $optionsHTML = [];
+        $value = $this->getValue($key);
+        foreach ($options as $k => $v) {
+            $selected = in_array($k,$value) ? "selected" : "";
+            $optionsHTML[] = "<option value='$k' $selected>$v</option>";
+        }
+        $optionsHTML = implode("", $optionsHTML);
+        $optionsNumber = count($options);
+        return <<<HTML
+        <div class="form-group">
+        <label for="field{$key}">$label</label>
+        <select class="{$this->getInputClass($key)}" type="text" name="{$key}" id="field{$key}" size="{$optionsNumber}" required multiple>{$optionsHTML}</select>
+        {$this->getInvalidFeedback($key)}
+        </div>
+HTML;
+    }
+
     public function textarea(string $key, string $label)
     {
         $value = $this->getValue($key);
@@ -39,7 +58,7 @@ HTML;
 HTML;
     }
 
-    private function getValue(string $key): ?string
+    private function getValue(string $key)
     {
         if (is_array($this->data)) {
             return $this->data[$key] ?? null;

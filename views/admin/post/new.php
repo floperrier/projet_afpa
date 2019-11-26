@@ -6,6 +6,9 @@ use App\Model\Post;
 use App\ObjectHelper;
 use App\Table\PostTable;
 use App\Validator\PostValidator;
+use App\Auth;
+
+Auth::check();
 
 $errors = [];
 $post = new Post();
@@ -16,8 +19,14 @@ if (!empty($_POST)) {
     $postTable = new PostTable($pdo);
     $v = new PostValidator($_POST, $postTable);
     if ($v->validate()) {
-        $postTable->create($post);
-        header('Location: ' . $router->url('admin_post',['id' => $post->getId()]) . '?created=1');
+        $id = $postTable->create([
+            "name" => $post->getName(),
+            "slug" => $post->getSlug(),
+            "content" => $post->getContent(),
+            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s")
+        ]);
+        $post->setId($id);
+        header('Location: ' . $router->url('admin_posts') . '?created=1');
         exit();
     } else {
         $errors = $v->errors();

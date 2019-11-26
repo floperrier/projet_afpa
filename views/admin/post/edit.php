@@ -2,29 +2,35 @@
 
 use App\Connection;
 use App\HTML\Form;
-use App\ObjectOperations;
 use App\Table\PostTable;
 use App\Validator\PostValidator;
+use App\Auth;
+use App\ObjectHelper;
+use App\Table\CategoryTable;
+
+Auth::check();
 
 $id = $params['id'];
 
 $pdo = Connection::getPDO();
-$postTable =  new PostTable($pdo);
+$postTable = new PostTable($pdo);
+$categoryTable = new CategoryTable($pdo);
+$categories = $categoryTable->list();
 $post = $postTable->find($id);
+$categoryTable->hydratePosts([$post]);
 $success = null;
 $errors = [];
 
 if (!empty($_POST)) {
     $v = new PostValidator($_POST, $postTable, $post->getId());
-    ObjectOperations::hydrate($post,$_POST,['name','slug','content','created_at']);
-    dd($post);
-    /* $post
-        ->setName($_POST["name"])
-        ->setSlug($_POST["slug"])
-        ->setContent($_POST["content"])
-        ->setCreatedAt($_POST['created_at']); */
+    ObjectHelper::hydrate($post,$_POST,['name','slug','content','created_at']);
     if ($v->validate()) {
-        $postTable->update($post);
+        $postTable->update([
+            "name" => $post->getName(),
+            "slug" => $post->getSlug(),
+            "content" => $post->getContent(),
+            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s")
+        ],$post->getId());
         $success = "L'article a bien été modifié !";    
     } else {
         $errors = $v->errors();

@@ -84,9 +84,21 @@ class Post {
         return nl2br(htmlentities(Text::excerpt($this->content,60)));
     }
 
+    /**
+     * @return Category[]
+     */
     public function getCategories(): ?array
     {
         return $this->categories;
+    }
+
+    public function getCategoriesIds(): array
+    {
+        $ids = [];
+        foreach ($this->categories as $category) {
+            $ids[] = $category->getId();
+        }
+        return $ids;
     }
 
     public function addCategory(Category $category): void

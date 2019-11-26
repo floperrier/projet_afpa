@@ -5,20 +5,27 @@ use App\HTML\Form;
 use App\ObjectHelper;
 use App\Table\CategoryTable;
 use App\Validator\CategoryValidator;
+use App\Auth;
+
+Auth::check();
 
 $id = $params['id'];
 
 $pdo = Connection::getPDO();
-$categoryTable =  new CategoryTable($pdo);
-$category = $categoryTable->find($id);
+$table =  new CategoryTable($pdo);
+$category = $table->find($id);
 $success = null;
 $errors = [];
+$fields = ['name','slug'];
 
 if (!empty($_POST)) {
-    $v = new CategoryValidator($_POST, $categoryTable, $category->getId());
-    ObjectHelper::hydrate($category,$_POST,['name','slug']);
+    $v = new CategoryValidator($_POST, $table, $category->getId());
+    ObjectHelper::hydrate($category, $_POST, $fields);
     if ($v->validate()) {
-        $categoryTable->update($category);
+        $table->update([
+            "name" => $category->getName(),
+            "slug" => $category->getSlug(),
+        ],$category->getId());
         $success = "La catégorie a bien été modifié !";    
     } else {
         $errors = $v->errors();

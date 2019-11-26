@@ -28,49 +28,18 @@ final class CategoryTable extends Table
         }
     }
 
-    public function create(Category $category)
+    public function all(): array
     {
-        $query = $this->pdo->prepare("INSERT INTO {$this->table} (name,slug) VALUES (:name,:slug)");
-        $ok = $query->execute([
-            "name" => $category->getName(),
-            "slug" => $category->getSlug()
-        ]);
-        if ($ok === false) {
-            throw new Exception("La création de la catégorie a échoué");
-        }
-        $category->setId((int)$this->pdo->lastInsertId());
+        return $this->queryAndFetchAll("SELECT * FROM {$this->table} ORDER BY id DESC");
     }
 
-    public function update(Category $category)
+    public function list(): array
     {
-        $query = $this->pdo->prepare("UPDATE {$this->table} SET name = :name, slug = :slug WHERE id = :id");
-        $ok = $query->execute([
-            "id" => $category->getId(),
-            "name" => $category->getName(),
-            "slug" => $category->getSlug()
-        ]);
-        if ($ok === false) {
-            throw new Exception("La modification de la catégorie {$category->getId()} a échoué");
+        $categories = $this->queryAndFetchAll("SELECT * FROM {$this->table} ORDER BY name ASC");
+        $results = [];
+        foreach ($categories as $category) {
+            $results[$category->getId()] = $category->getName();
         }
-    }
-
-    public function delete(int $id): void
-    {
-        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
-        $ok = $query->execute([$id]);
-        if ($ok === false) {
-            throw new Exception("La suppression de la catégorie $id a échoué");
-        }
-    }
-
-    public function findPaginated()
-    {
-        $pagination = new PaginatedQuery(
-            "SELECT count(id) FROM {$this->table}",
-            "SELECT * FROM {$this->table}",
-            Category::class
-        );
-        $categories = $pagination->getItems();
-        return [$categories,$pagination];
+        return $results;
     }
 }

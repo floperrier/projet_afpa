@@ -49,4 +49,50 @@ abstract class Table
         $query->execute($params);
         return $query->fetch(PDO::FETCH_NUM)[0] > 0;
     }
+
+    public function all()
+    {
+        return $this->queryAndFetchAll("SELECT * FROM {$this->class} ORDER BY id DESC");
+    }
+
+    public function queryAndFetchAll(string $sql)
+    {
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_CLASS,$this->class);
+    }
+
+    public function create(array $data): int
+    {
+        $sqlFields = [];
+        foreach ($data as $key => $value) {
+            $sqlFields[] = "$key = :$key";
+        }
+        $query = $this->pdo->prepare("INSERT INTO {$this->table} SET " . implode(", ", $sqlFields));
+        $ok = $query->execute($data);
+        if ($ok === false) {
+            throw new Exception("La création a échoué");
+        }
+        return (int)$this->pdo->lastInsertId();
+    }
+
+    public function update(array $data, int $id)
+    {
+        $sqlFields = [];
+        foreach ($data as $key => $value) {
+            $sqlFields[] = "$key = :$key";
+        }
+        $query = $this->pdo->prepare("UPDATE {$this->table} SET " . implode(", ", $sqlFields) . " WHERE id = :id");
+        $ok = $query->execute(array_merge($data,['id' => $id]));
+        if ($ok === false) {
+            throw new Exception("La modification du champs $id a échoué");
+        }
+    }
+
+    public function delete(int $id): void
+    {
+        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
+        $ok = $query->execute([$id]);
+        if ($ok === false) {
+            throw new Exception("La suppression du champs $id a échoué");
+        }
+    }
 }

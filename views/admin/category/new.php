@@ -6,18 +6,26 @@ use App\Model\Category;
 use App\ObjectHelper;
 use App\Table\CategoryTable;
 use App\Validator\CategoryValidator;
+use App\Auth;
+
+Auth::check();
 
 $errors = [];
 $category = new Category();
 
 if (!empty($_POST)) {
     $pdo = Connection::getPDO();
-    ObjectHelper::hydrate($category,$_POST,['name','slug']);
     $categoryTable = new CategoryTable($pdo);
+
+    ObjectHelper::hydrate($category,$_POST,['name','slug']);
     $v = new CategoryValidator($_POST, $categoryTable);
     if ($v->validate()) {
-        $categoryTable->create($category);
-        header('Location: ' . $router->url('admin_category',['id' => $category->getId()]) . '?created=1');
+        $id = $categoryTable->create([
+            'name' => $category->getName(),
+            'slug' => $category->getSlug()
+        ]);
+        $category->setId($id);
+        header('Location: ' . $router->url('admin_categories') . '?created=1');
         exit();
     } else {
         $errors = $v->errors();

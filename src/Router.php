@@ -45,11 +45,13 @@ class Router
         $match = $this->router->match();
         $view = $match['target'];
         $params = $match['params'];
+        $isAdmin = strpos($view,'admin/') !== false;
+        $layout = $isAdmin ? 'admin/layouts/default' : 'layouts/default';
         $router = $this;
         ob_start();
         require $this->viewPath . DIRECTORY_SEPARATOR . $view . '.php';
         $content = ob_get_clean();
-        require $this->viewPath . DIRECTORY_SEPARATOR . 'layouts/default.php';
+        require $this->viewPath . DIRECTORY_SEPARATOR . $layout . '.php';
         return $this;
     }
 

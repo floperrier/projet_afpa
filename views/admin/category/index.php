@@ -2,14 +2,17 @@
 
 use App\Connection;
 use App\Table\CategoryTable;
+use App\Auth;
+
+Auth::check();
 
 $pdo = Connection::getPDO();
 $categoryTable =  new CategoryTable($pdo);
-[$categories,$pagination] = $categoryTable->findPaginated();
+$categories = $categoryTable->all();
 $link = $router->url('admin_categories');
 ?>
 
-<?php if (isset($_GET["delete"])): ?>
+<?php if (isset($_GET["deleted"])): ?>
     <div class="alert alert-success">
         La catégorie a bien été supprimé !
     </div>
@@ -42,7 +45,3 @@ $link = $router->url('admin_categories');
     <?php endforeach ?>
     </tbody>
 </table>
-<div class="d-flex justify-content-between my-4">
-<?= $pagination->previousLink($link) ?>
-<?= $pagination->nextLink($link) ?>
-</div>
