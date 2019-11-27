@@ -4,7 +4,6 @@ use App\Connection;
 use App\HTML\Form;
 use App\Model\Category;
 use App\ObjectHelper;
-use App\Table\CategoryTable;
 use App\Validator\CategoryValidator;
 use App\Auth;
 
@@ -15,8 +14,6 @@ $category = new Category();
 
 if (!empty($_POST)) {
     $pdo = Connection::getPDO();
-    $categoryTable = new CategoryTable($pdo);
-
     ObjectHelper::hydrate($category,$_POST,['name','slug']);
     $v = new CategoryValidator($_POST, $categoryTable);
     if ($v->validate()) {

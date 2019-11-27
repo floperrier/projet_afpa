@@ -31,5 +31,6 @@ return array(
     'creditCard'    => "doit être un numéro de carte de crédit valide",
     'lengthMin'     => "doit avoir au moins %d caractères",
     'lengthMax'     => "ne doit pas dépasser %d caractères",
-    'instanceOf'    => "doit être une instance de '%s'"
+    'instanceOf'    => "doit être une instance de '%s'",
+    'subset'        => "Un item n'existe pas dans la liste"
 );

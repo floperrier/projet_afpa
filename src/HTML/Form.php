@@ -40,7 +40,7 @@ HTML;
         return <<<HTML
         <div class="form-group">
         <label for="field{$key}">$label</label>
-        <select class="{$this->getInputClass($key)}" type="text" name="{$key}" id="field{$key}" size="{$optionsNumber}" required multiple>{$optionsHTML}</select>
+        <select class="{$this->getInputClass($key)}" type="text" name="{$key}[]" id="field{$key}" size="{$optionsNumber}" required multiple>{$optionsHTML}</select>
         {$this->getInvalidFeedback($key)}
         </div>
 HTML;

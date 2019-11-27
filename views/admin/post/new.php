@@ -7,25 +7,26 @@ use App\ObjectHelper;
 use App\Table\PostTable;
 use App\Validator\PostValidator;
 use App\Auth;
+use App\Table\CategoryTable;
 
 Auth::check();
 
 $errors = [];
 $post = new Post();
 
+$pdo = Connection::getPDO();
+$categoryTable = new CategoryTable($pdo);
+$categories = $categoryTable->list();
+
 if (!empty($_POST)) {
-    $pdo = Connection::getPDO();
-    ObjectHelper::hydrate($post,$_POST,['name','slug','content','created_at']);
     $postTable = new PostTable($pdo);
-    $v = new PostValidator($_POST, $postTable);
+    $v = new PostValidator($_POST, $postTable, $post->getId(), $categories);
+    ObjectHelper::hydrate($post,$_POST,['name','slug','content','created_at']);
     if ($v->validate()) {
-        $id = $postTable->create([
-            "name" => $post->getName(),
-            "slug" => $post->getSlug(),
-            "content" => $post->getContent(),
-            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s")
-        ]);
-        $post->setId($id);
+        $pdo->beginTransaction();
+        $postTable->createPost($post);
+        $postTable->attachCategories($post->getId(),$_POST['categories_ids']);
+        $pdo->commit();
         header('Location: ' . $router->url('admin_posts') . '?created=1');
         exit();
     } else {

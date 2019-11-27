@@ -92,6 +92,12 @@ class Post {
         return $this->categories;
     }
 
+    public function setCategories(array $categories): self
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
     public function getCategoriesIds(): array
     {
         $ids = [];

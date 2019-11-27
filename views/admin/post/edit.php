@@ -22,15 +22,14 @@ $success = null;
 $errors = [];
 
 if (!empty($_POST)) {
-    $v = new PostValidator($_POST, $postTable, $post->getId());
-    ObjectHelper::hydrate($post,$_POST,['name','slug','content','created_at']);
+    ObjectHelper::hydrate($post, $_POST, ['name','slug','content','created_at']);
+    $v = new PostValidator($_POST, $postTable, $post->getId(), $categories);
     if ($v->validate()) {
-        $postTable->update([
-            "name" => $post->getName(),
-            "slug" => $post->getSlug(),
-            "content" => $post->getContent(),
-            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s")
-        ],$post->getId());
+        $pdo->beginTransaction();
+        $postTable->updatePost($post);
+        $postTable->attachCategories($post->getId(),$_POST['categories_ids']);
+        $pdo->commit();
+        $categoryTable->hydratePosts([$post]);
         $success = "L'article a bien été modifié !";    
     } else {
         $errors = $v->errors();
