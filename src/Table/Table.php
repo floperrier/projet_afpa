@@ -32,7 +32,7 @@ abstract class Table
         $query->setFetchMode(PDO::FETCH_CLASS,$this->class);
         $result = $query->fetch();
         if ($result === false) {
-            throw new NotFoundException($this->table,$id);
+            throw new NotFoundException($this->table, $id, "id");
         }
         return $result;
     }

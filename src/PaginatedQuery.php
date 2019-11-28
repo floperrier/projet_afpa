@@ -14,7 +14,7 @@ class PaginatedQuery
     private $count;
     private $items;
 
-    public function __construct(string $queryCount, string $query, string $classMapping, ?PDO $pdo = null, int $perPage = 12)
+    public function __construct(string $queryCount, string $query, string $classMapping, ?PDO $pdo = null, int $perPage = 8)
     {
         $this->queryCount = $queryCount;
         $this->query = $query;

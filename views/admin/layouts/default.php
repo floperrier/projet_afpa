@@ -18,6 +18,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= $router->url('admin_categories') ?>">Catégories</a>
             </li>
+            <li class="nav-item">
+                <form action="<?= $router->url('logout') ?>" method="post">
+                    <button class="nav-link" type="submit" style="border:none; background:transparent">Déconnexion</button>
+                </form>
+            </li>
         </ul>
     </nav>
     <div class="container mt-4">
