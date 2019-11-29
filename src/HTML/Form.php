@@ -52,8 +52,8 @@ HTML;
         $value = $this->getValue($key);
         return <<<HTML
         <div class="form-group">
-        <label for="field{$key}">$label</label>
-        <textarea class="{$this->getInputClass($key)}" rows="15" type="text" name="{$key}" id="field{$key}">$value</textarea>
+        <label for="summernote">$label</label>
+        <textarea class="{$this->getInputClass($key)}" rows="15" type="text" name="{$key}" id="summernote">$value</textarea>
         {$this->getInvalidFeedback($key)}
         </div>
 HTML;

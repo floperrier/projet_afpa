@@ -14,7 +14,7 @@ class PaginatedQuery
     private $count;
     private $items;
 
-    public function __construct(string $queryCount, string $query, string $classMapping, ?PDO $pdo = null, int $perPage = 8)
+    public function __construct(string $queryCount, string $query, string $classMapping, ?PDO $pdo = null, ?int $perPage = 5)
     {
         $this->queryCount = $queryCount;
         $this->query = $query;
@@ -57,7 +57,7 @@ class PaginatedQuery
         if ($currentPage <= 1) return null;
         if ($currentPage > 2) $link .= "?page=" . ($currentPage - 1);
         return <<<HTML
-        <a class="btn btn-primary" href="$link">Page précédente</a>
+        <a class="btn btn-primary" href="$link">&laquo; Page précédente</a>
 HTML;
     }
 
@@ -68,7 +68,7 @@ HTML;
         if ($currentPage >= $pages) return null;
         $link .= "?page=" . ($currentPage + 1);
         return <<<HTML
-        <a class="btn btn-primary ml-auto" href="$link">Page suivante</a>
+        <a class="btn btn-primary ml-auto" href="$link">Page suivante &raquo;</a>
 HTML;
     }
 }

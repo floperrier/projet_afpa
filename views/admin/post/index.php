@@ -8,7 +8,7 @@ Auth::check();
 
 $pdo = Connection::getPDO();
 $postManager =  new PostTable($pdo);
-[$posts,$pagination] = $postManager->findPaginated();
+[$posts,$pagination] = $postManager->findPaginated(12);
 $link = $router->url('admin_posts');
 ?>
 
@@ -25,26 +25,25 @@ $link = $router->url('admin_posts');
 <?php endif ?>
 
 <div class="d-flex justify-content-between mb-4 align-items-center">
-<h1>Articles</h1>
-<a class="btn btn-success mr-4" href="<?= $router->url('admin_post_new') ?>">Nouvel article</a>
+<h1>Gestion des articles</h1>
 </div>
-<table class="table text-center">
+<table class="table table-hover table-sm text-center">
     <thead>
         <tr>
-            <th>#</th>
-            <th>Titre</th>
-            <th>Edition</th>
+            <th class="font-weight-bold">#</th>
+            <th class="font-weight-bold text-uppercase">Titre</th>
+            <th><a class="btn btn-success" href="<?= $router->url('admin_post_new') ?>"><i class="fas fa-plus"></i> Nouvel article</a></th>
         </tr>
     </thead>
     <tbody>
     <?php foreach($posts as $post): ?>
         <tr>
-            <td><?= $post->getId() ?></td>
-            <td><a href="<?= $router->url('admin_post',["id" => $post->getId(), "slug" => $post->getSlug()]) ?>"><?= $post->getName() ?></a></td>
+            <td class="align-middle"><?= $post->getId() ?></td>
+            <td class="align-middle"><a href="<?= $router->url('admin_post',["id" => $post->getId(), "slug" => $post->getSlug()]) ?>"><?= $post->getName() ?></a></td>
             <td>
-                <a name="" id="" class="btn btn-primary" href="<?= $router->url('admin_post',["id" => $post->getId()]) ?>" role="button">Editer</a>
+                <a name="" id="" class="btn btn-primary m-1 btn-sm" href="<?= $router->url('admin_post',["id" => $post->getId()]) ?>" role="button">Editer</a>
                 <form method="post" action="<?= $router->url('admin_post_delete',["id" => $post->getId()]) ?>" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer l\'article ?')" style="display:inline">
-                    <button class="btn btn-danger" type="submit" >Supprimer</button>
+                    <button class="btn btn-danger m-1 btn-sm" type="submit" >Supprimer</button>
                 </form>
             </td>
         </tr>

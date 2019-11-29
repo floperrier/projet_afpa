@@ -25,19 +25,19 @@ class Router
 
     public function get(string $url, string $view, ?string $name = null): self
     {
-        $this->router->map('GET',$url,$view,$name);
+        $this->router->map('GET',$url, $view, $name);
         return $this;
     }
 
     public function post(string $url, string $view, ?string $name = null): self
     {
-        $this->router->map('POST',$url,$view,$name);
+        $this->router->map('POST', $url, $view, $name);
         return $this;
     }
 
     public function match(string $url, string $view, ?string $name = null): self
     {
-        $this->router->map('GET|POST',$url,$view,$name);
+        $this->router->map('GET|POST', $url, $view, $name);
         return $this;
     }
 
@@ -51,7 +51,8 @@ class Router
         $router = $this;
         try {
             ob_start();
-            $view !== null ? require $this->viewPath . DIRECTORY_SEPARATOR . $view . '.php' : require $this->viewPath . DIRECTORY_SEPARATOR . 'e404' . '.php';
+            if ($view !== null) require $this->viewPath . DIRECTORY_SEPARATOR . $view . '.php';
+            else require $this->viewPath . DIRECTORY_SEPARATOR . 'e404' . '.php';
             $content = ob_get_clean();
             require $this->viewPath . DIRECTORY_SEPARATOR . $layout . '.php';    
         } catch (ForbiddenException $e) {

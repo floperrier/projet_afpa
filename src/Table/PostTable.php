@@ -41,12 +41,13 @@ final class PostTable extends Table
         }
     }
 
-    public function findPaginated()
+    public function findPaginated(?int $perPage = null)
     {
         $pagination = new PaginatedQuery(
             "SELECT count(id) FROM {$this->table}",
             "SELECT * FROM post ORDER BY created_at DESC",
-            Post::class
+            Post::class,
+            null, $perPage
         );
         $posts = $pagination->getItems();
         (new CategoryTable($this->pdo))->hydratePosts($posts);

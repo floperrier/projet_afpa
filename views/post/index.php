@@ -1,26 +1,33 @@
 <?php
 
 use App\Connection;
-use App\Helper\Text;
-use App\Model\Category;
-use App\Model\Post;
-use App\PaginatedQuery;
-use App\URL;
+use App\Table\CategoryTable;
 use App\Table\PostTable;
 
 $title = "Mon blog";
 $pdo = Connection::getPDO();
 $table = new PostTable($pdo);
-[$posts,$pagination] = $table->findPaginated();
+$categoryTable = new CategoryTable($pdo);
+$listeCategories = $categoryTable->all();
+[$posts,$pagination] = $table->findPaginated(5);
 $link = $router->url('home');
 ?>
 
-<h1>Mon blog</h1>
-
 <div class="row">
+    <div class="col-9">
+    <h1 class="text-center">Liste des articles</h1>
     <?php foreach ($posts as $post): ?>
         <?php require 'card.php' ?>
     <?php endforeach ?>
+    </div>
+    <div class="col-3">
+        <h1>Catégories</h1>
+        <ul class="list-group list-group-flush">
+            <?php foreach ($listeCategories as $c): ?>
+                <a href="<?= $router->url('category',['slug' => $c->getSlug(), 'id' => $c->getId()]) ?>" class="list-group-item"><?= $c->getName() ?></a>
+            <?php endforeach ?>
+        </ul>
+    </div>
 </div>
 
 <div class="d-flex justify-content-between my-4">

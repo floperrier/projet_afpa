@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Helper\Text;
+use App\Helper\TextHelper;
 use DateTime;
 
 class Post {
@@ -37,7 +37,7 @@ class Post {
 
     public function getCreatedAt(): ?DateTime
     {
-        return new DateTime($this->created_at);
+        return new \DateTime($this->created_at);
     }
 
     /* SETTER */
@@ -81,7 +81,7 @@ class Post {
         if ($this->content === null) {
             return null;
         }
-        return nl2br(htmlentities(Text::excerpt($this->content,60)));
+        return nl2br(htmlentities(TextHelper::excerpt($this->content,350))) . ' ...';
     }
 
     /**

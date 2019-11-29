@@ -31,7 +31,7 @@ $router
     ->get('/blog/[*:slug]-[i:id]','post/show','post')
     ->match('/login','auth/login','login')
     ->post('/logout','auth/logout','logout')
-    // ADMIN
+    /* ADMIN */
     // Gestion des articles
     ->get('/admin','admin/post/index','admin_posts')
     ->match('/admin/post/[i:id]','admin/post/edit','admin_post')
