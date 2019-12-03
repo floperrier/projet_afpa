@@ -3,9 +3,9 @@
 use App\Connection;
 use App\HTML\Form;
 use App\Model\Category;
-use App\ObjectHelper;
+use App\Helper\ObjectHelper;
 use App\Validator\CategoryValidator;
-use App\Auth;
+use App\Security\Auth;
 
 Auth::check();
 

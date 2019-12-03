@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Validator;
+use App\Validator\Validator;
 
 abstract class AbstractValidator
 {

@@ -2,10 +2,10 @@
 
 use App\Connection;
 use App\HTML\Form;
-use App\ObjectHelper;
+use App\Helper\ObjectHelper;
 use App\Table\CategoryTable;
 use App\Validator\CategoryValidator;
-use App\Auth;
+use App\Security\Auth;
 
 Auth::check();
 
@@ -16,11 +16,10 @@ $table =  new CategoryTable($pdo);
 $category = $table->find($id);
 $success = null;
 $errors = [];
-$fields = ['name','slug'];
 
 if (!empty($_POST)) {
     $v = new CategoryValidator($_POST, $table, $category->getId());
-    ObjectHelper::hydrate($category, $_POST, $fields);
+    ObjectHelper::hydrate($category, $_POST, ['name', 'slug']);
     if ($v->validate()) {
         $table->update([
             "name" => $category->getName(),

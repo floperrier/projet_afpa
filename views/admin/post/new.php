@@ -3,10 +3,10 @@
 use App\Connection;
 use App\HTML\Form;
 use App\Model\Post;
-use App\ObjectHelper;
+use App\Helper\ObjectHelper;
 use App\Table\PostTable;
 use App\Validator\PostValidator;
-use App\Auth;
+use App\Security\Auth;
 use App\Table\CategoryTable;
 
 Auth::check();

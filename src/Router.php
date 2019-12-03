@@ -51,8 +51,11 @@ class Router
         $router = $this;
         try {
             ob_start();
-            if ($view !== null) require $this->viewPath . DIRECTORY_SEPARATOR . $view . '.php';
-            else require $this->viewPath . DIRECTORY_SEPARATOR . 'e404' . '.php';
+            if ($view !== null) {
+                require $this->viewPath . DIRECTORY_SEPARATOR . $view . '.php';
+            } else {
+                require $this->viewPath . DIRECTORY_SEPARATOR . 'e404' . '.php';
+            }
             $content = ob_get_clean();
             require $this->viewPath . DIRECTORY_SEPARATOR . $layout . '.php';    
         } catch (ForbiddenException $e) {

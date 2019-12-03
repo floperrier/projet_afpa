@@ -17,8 +17,13 @@ class Form
 
     public function input(string $key, string $label)
     {
-        $value = $this->getValue($key);
-        $type = $key == "password" ? "password" : "text";
+        if (strstr($key,"password") != false) {
+            $type = "password";
+            $value = null;
+        } else {
+            $type = "text";
+            $value = $this->getValue($key);
+        }
         return <<<HTML
         <div class="form-group">
         <label for="field{$key}">$label</label>

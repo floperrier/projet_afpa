@@ -23,9 +23,9 @@
 
 <body class="d-flex flex-column h-100">
 
-    <nav class="navbar navbar-expand-lg navbar-dark primary-color-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark primary-color-dark d-flex ">
         <a class="navbar-brand" href="/">Blog</a>
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav d-flex align-items-center w-100">
             <li class="nav-item">
                 <a class="nav-link" href="<?= $router->url('admin_posts') ?>">Articles</a>
             </li>
@@ -33,8 +33,11 @@
                 <a class="nav-link" href="<?= $router->url('admin_categories') ?>">Catégories</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="<?= $router->url('admin_profil') ?>">Profil</a>
+            </li>
+            <li class="nav-item ml-auto">
                 <form action="<?= $router->url('logout') ?>" method="post">
-                    <button class="nav-link" type="submit" style="border:none; background:transparent">Déconnexion</button>
+                    <button class="nav-link btn btn-primary my-0" type="submit" style="border:none; background:transparent">Déconnexion</button>
                 </form>
             </li>
         </ul>

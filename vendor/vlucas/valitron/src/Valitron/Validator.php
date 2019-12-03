@@ -1462,6 +1462,7 @@ class Validator
         }
 
         return $message;
+        return str_replace('{field}', '- ', $message);
     }
 
     /**

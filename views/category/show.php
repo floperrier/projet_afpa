@@ -1,11 +1,8 @@
 <?php
 
 use App\Connection;
-use App\Model\{Category,Post};
-use App\PaginatedQuery;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
-use App\URL;
 
 $id = $params['id'];
 $slug = $params['slug'];
