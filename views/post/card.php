@@ -16,7 +16,7 @@ $categories = array_map(function ($category) use ($router) {
             <hr>
             <p class="card-text"><?= $post->getExcerpt() ?></p>
             <div class="d-flex justify-content-between align-items-center">
-            <p class="text-muted m-0 font-italic">Publié le <?= $post->getCreatedAt()->format('d/m/Y') ?></p>
+            <p class="text-muted m-0 font-italic">Publié le <?= $post->getCreatedAt()->format('d/m/Y') ?> par <strong><?= $author->getUsername() ?></strong></p>
                 <a href="<?= $router->url('post',["id" => $post->getId(), "slug" => $post->getSlug()]) ?>" class="btn btn-primary text-right">Voir plus</a>
             </div>
         </div>

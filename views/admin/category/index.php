@@ -2,7 +2,7 @@
 
 use App\Connection;
 use App\Table\CategoryTable;
-use App\Auth;
+use App\Security\Auth;
 
 Auth::check();
 

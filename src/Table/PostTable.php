@@ -21,13 +21,14 @@ final class PostTable extends Table
         ],$post->getId());
     }
 
-    public function createPost(Post $post)
+    public function createPost(Post $post, int $author_id)
     {
         $id = $this->create([
             "name" => $post->getName(),
             "slug" => $post->getSlug(),
             "content" => $post->getContent(),
-            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s")
+            "created_at" => $post->getCreatedAt()->format("Y-m-d H:i:s"),
+            "author_id" => $author_id
         ]);
         $post->setId($id);
     }

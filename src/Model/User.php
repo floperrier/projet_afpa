@@ -4,19 +4,8 @@ namespace App\Model;
 
 class User
 {
-    /**
-     * @var int
-     */
     private $id;
-    
-    /**
-     * @var string
-     */
     private $username;
-
-    /**
-     * @var string
-     */
     private $password;
 
     public function getUsername(): ?string

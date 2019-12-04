@@ -4,7 +4,6 @@ namespace App\Table;
 
 use PDO;
 use App\Model\Category;
-use App\PaginatedQuery;
 
 final class CategoryTable extends Table
 {

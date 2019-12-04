@@ -24,13 +24,13 @@ if (!empty($_POST)) {
     ObjectHelper::hydrate($post,$_POST,['name','slug','content','created_at']);
     if ($v->validate()) {
         $pdo->beginTransaction();
-        $postTable->createPost($post);
+        $postTable->createPost($post, $_SESSION['auth']);
         $postTable->attachCategories($post->getId(),$_POST['categories_ids']);
         $pdo->commit();
         header('Location: ' . $router->url('admin_posts') . '?created=1');
         exit();
     } else {
-        $errors = $v->errors();
+        $errors = (array)$v->errors();
     }
 }
 $form = new Form($post,$errors);

@@ -12,6 +12,7 @@ class Post {
     private $slug;
     private $content;
     private $created_at;
+    private $author_id;
     private $categories = [];
 
     /* GETTER */
@@ -38,6 +39,11 @@ class Post {
     public function getCreatedAt(): ?DateTime
     {
         return new \DateTime($this->created_at);
+    }
+
+    public function getAuthorId(): int
+    {
+        return $this->author_id;
     }
 
     /* SETTER */
@@ -68,6 +74,12 @@ class Post {
     public function setCreatedAt(string $date): self
     {
         $this->created_at = $date;
+        return $this;
+    }
+
+    public function setAuthor(int $author_id): self
+    {
+        $this->author_id = $author_id;
         return $this;
     }
 
