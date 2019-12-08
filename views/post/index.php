@@ -1,7 +1,6 @@
 <?php
 
-use App\Connection;
-use App\Model\User;
+use App\Table\Connection;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
 use App\Table\UserTable;
@@ -13,7 +12,6 @@ $userTable = new UserTable($pdo);
 $categoryTable = new CategoryTable($pdo);
 $listeCategories = $categoryTable->all();
 [$posts,$pagination] = $table->findPaginated(5);
-$link = $router->url('home');
 ?>
 
 <div class="row">
@@ -35,6 +33,6 @@ $link = $router->url('home');
 </div>
 
 <div class="d-flex justify-content-between my-4">
-<?= $pagination->previousLink($link) ?>
-<?= $pagination->nextLink($link) ?>
+<?= $pagination->previousLink($router->url('home')) ?>
+<?= $pagination->nextLink($router->url('home')) ?>
 </div>

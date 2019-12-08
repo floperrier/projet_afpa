@@ -1,6 +1,6 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 

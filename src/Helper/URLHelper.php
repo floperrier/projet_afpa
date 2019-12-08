@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Helper;
 
 use Exception;
 
-class URL 
+class URLHelper
 {
     public static function getInt(string $name, ?int $default = null): ?int 
     {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 use App\HTML\Form;
 use App\Table\PostTable;
 use App\Validator\PostValidator;

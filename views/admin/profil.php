@@ -1,7 +1,7 @@
 <?php
 
 use App\Security\Auth;
-use App\Connection;
+use App\Table\Connection;
 use App\HTML\Form;
 use App\Helper\ObjectHelper;
 use App\Table\UserTable;

@@ -1,8 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Table;
 
+use App\Table\Connection;
 use PDO;
+use App\Helper\URLHelper;
 
 class PaginatedQuery
 {
@@ -40,7 +42,7 @@ class PaginatedQuery
 
     private function getCurrentPage(): int
     {
-        return URL::getPositiveInt('page',1);
+        return URLHelper::getPositiveInt('page',1);
     }
 
     private function getPages(): int

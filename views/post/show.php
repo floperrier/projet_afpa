@@ -1,6 +1,6 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 use App\Model\{Category,Post};
 use App\Table\CategoryTable;
 use App\Table\PostTable;

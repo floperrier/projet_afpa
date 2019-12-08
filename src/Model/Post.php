@@ -83,19 +83,6 @@ class Post {
         return $this;
     }
 
-    public function getFormattedContent(): string
-    {
-        return nl2br(htmlentities($this->content));
-    }
-
-    public function getExcerpt(): string
-    {
-        if ($this->content === null) {
-            return null;
-        }
-        return nl2br(htmlentities(TextHelper::excerpt($this->content,350))) . ' ...';
-    }
-
     /**
      * @return Category[]
      */
@@ -117,6 +104,20 @@ class Post {
             $ids[] = $category->getId();
         }
         return $ids;
+    }
+
+
+    public function getFormattedContent(): string
+    {
+        return nl2br(htmlentities($this->content));
+    }
+
+    public function getExcerpt(): string
+    {
+        if ($this->content === null) {
+            return null;
+        }
+        return nl2br(htmlentities(TextHelper::excerpt($this->content,350))) . ' ...';
     }
 
     public function addCategory(Category $category): void

@@ -4,7 +4,12 @@ CREATE TABLE post (
     slug VARCHAR(255) NOT NULL,
     content TEXT(650000) NOT NULL,
     created_at DATETIME NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT fk_author_id
+        FOREIGN KEY (author_id)
+        REFERENCES user(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT,
 );
 
 CREATE TABLE category (

@@ -1,6 +1,6 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 use App\Table\PostTable;
 use App\Auth;
 

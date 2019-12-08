@@ -1,14 +1,20 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
+use App\Table\UserTable;
 
 $id = $params['id'];
 $slug = $params['slug'];
 
 $pdo = Connection::getPDO();
-$category = (new CategoryTable($pdo))->find($id);
+$categoryTable = new CategoryTable($pdo);
+$postTable = new PostTable($pdo);
+$userTable = new UserTable($pdo);
+
+
+$category = $categoryTable->find($id);
 
 // On vérifie que le slug correspond, sinon on redirige vers la bonne url
 if ($slug !== $category->getSlug()) {
@@ -16,15 +22,15 @@ if ($slug !== $category->getSlug()) {
     header('Location: ' . $router->url('category',['slug' => $category->getSlug(), 'id' => $category->getId()]));
 }
 
-[$posts,$pagination] = (new PostTable($pdo))->findPaginatedForCategory($category->getId());
-$link = $router->url('category',['id' => $category->getId(), 'slug' => $category->getSlug()]);
+[$posts,$pagination] = $postTable->findPaginatedForCategory($category->getId());
 ?>
 
 <h1 class="text-center">Catégorie "<?= htmlentities($category->getName()) ?>"</h1>
 <hr>
 <div class="row">
     <div class="col-10 mx-auto">
-    <?php foreach ($posts as $post): ?>
+    <?php foreach ($posts as $post): ?>      
+        <?php $author = $userTable->find($post->getAuthorId()) ?>
         <?php require dirname(__DIR__) . '/post/card.php' ?>
     <?php endforeach ?>
 
@@ -32,6 +38,6 @@ $link = $router->url('category',['id' => $category->getId(), 'slug' => $category
 </div>
 
 <div class="d-flex justify-content-between my-4">
-<?= $pagination->previousLink($link) ?>
-<?= $pagination->nextLink($link) ?>
+<?= $pagination->previousLink($router->url('category',['id' => $category->getId(), 'slug' => $category->getSlug()])) ?>
+<?= $pagination->nextLink($router->url('category',['id' => $category->getId(), 'slug' => $category->getSlug()])) ?>
 </div>

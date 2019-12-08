@@ -1,6 +1,6 @@
 <?php
 
-use App\Connection;
+use App\Table\Connection;
 use App\HTML\Form;
 use App\Model\Category;
 use App\Helper\ObjectHelper;
@@ -16,14 +16,14 @@ $category = new Category();
 if (!empty($_POST)) {
     $pdo = Connection::getPDO();
     $categoryTable = new CategoryTable($pdo);
-    ObjectHelper::hydrate($category,$_POST,['name','slug']);
     $v = new CategoryValidator($_POST, $categoryTable);
+    ObjectHelper::hydrate($category,$_POST,['name','slug']);
+
     if ($v->validate()) {
         $id = $categoryTable->create([
             'name' => $category->getName(),
             'slug' => $category->getSlug()
         ]);
-        $category->setId($id);
         header('Location: ' . $router->url('admin_categories') . '?created=1');
         exit();
     } else {
